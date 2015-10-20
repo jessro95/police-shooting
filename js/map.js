@@ -44,56 +44,106 @@ var customBuild = function(data, map) {
 	var indianKilled = new L.LayerGroup([]);
 	var hawaiian = new L.LayerGroup([]);
 	var hawaiianKilled = new L.LayerGroup([]);
-
+	var whiteHitNum = 0;
+	var whiteKilledNum = 0;
+	var blackHitNum = 0;
+	var blackKilledNum = 0;
 	for (var i = data.length - 1; i >= 0; i--) {
 		var circle = new L.circleMarker([data[i].lat, data[i].lng], {fillColor :'gray'})
 		circle.bindPopup(data[i].Summary);
 
 		// Adding to layer based on race
 		var race = data[i].Race;
+		var killed = data[i]['Hit or Killed?']== "Killed";
 		if(race == "Unknown"){
-			circle.addTo(unknown)
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(unknownKilled);
+			} else {
+				circle.addTo(unknown);
+			}
 		}
 
 		if(race == "White"){
-			circle.addTo(white)
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(whiteKilled);
+				whiteKilledNum++;
+			} else {
+				circle.addTo(white)
+				whiteHitNum++;
+			}
 		}
 
 		if(race == "Black or African American"){
-			circle.addTo(black)
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(blackKilled);
+				blackKilledNum++;
+			} else {
+				circle.addTo(black);
+				blackHitNum++;
+			}
 		}
 
 		if(race == "Asian"){
-			circle.addTo(asian)
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(asianKilled);
+			} else {
+	
+				circle.addTo(asian);
+			}
 		}
 
 		if(race == "American Indian or Alaska Native"){
-			circle.addTo(indian)
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(indianKilled);
+			} else {
+				circle.addTo(indian);
+			}
 		}
 
 		if(race == ("Native Hawaiian or Other Pacific Islander")){
-			circle.addTo(hawaiian)
+
+			if(killed){
+				circle.setStyle({fillColor:'red'});
+				circle.addTo(hawaiianKilled);
+			} else {
+	
+				circle.addTo(hawaiian);
+			}
 		}
-
-		//changing color according to Killed or not. Killed = red
-		if(race == ("Killed")){
-			$circle.attr('fillColor', 'red')
-
-		}
-
 		//Add hover text
 	}
 
 	var overlayMaps = {
-		"Unknown" : unknown,
-		"White" : white,
-		"Black or African American" : black,
-		"Asian" : asian,
-		"American Indian or Alaska Native" : indian,
-		"Native Hawaiian or Other Pacific Islander" : hawaiian
+		"Unknown & Hit" : unknown,
+		"Unknown & Killed" : unknownKilled,
+		"White & Hit" : white,
+		"White & Killed" : whiteKilled,
+		"Black or African American & Hit" : black,
+		"Black or African American & Killed" : blackKilled,
+		"Asian & Hit" : asian,
+		"Asian & Killed" : asianKilled,
+		"American Indian or Alaska Native & Hit" : indian,
+		"American Indian or Alaska Native & Killed" : indianKilled,
+		"Native Hawaiian or Other Pacific Islander & Hit" : hawaiian,
+		"Native Hawaiian or Other Pacific Islander & Killed" : hawaiianKilled,
 	};
 
 	
 	// Once layers are on the map, add a leaflet controller that shows/hides layers
   	L.control.layers(null,overlayMaps).addTo(map);
+
+  	//set attribute of number for index.html
+  	$('#whiteKilled').text(whiteKilledNum);
+  	$('#whiteHit').text(whiteHitNum);
+  	$('#blackKilled').text(blackKilledNum);
+  	$('#blackHit').text(blackHitNum);
+}
+
+var getNum = function(str){
+
 }

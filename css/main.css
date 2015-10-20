@@ -2,3 +2,24 @@
 #container {
 	height:800px;
 }
+
+h1{
+	text-align: center;
+}
+
+table{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#hit{
+	content: "hit";
+	font-weight: 3px;
+	color: 'grey';
+}
+
+#killed{
+	content: "killed";
+	font-weight: 3px;
+	color:'red';
+}
